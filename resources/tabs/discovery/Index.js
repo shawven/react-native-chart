@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-
-import {Image, FlatList, StyleSheet, Text, View, StatusBar} from "react-native";
+import {Image, FlatList, StyleSheet, Text, View} from "react-native";
+import StatusBar from '../../common/StatusBar';
 
 var REQUEST_URL =
     "https://raw.githubusercontent.com/facebook/react-native/0.51-stable/docs/MoviesExample.json";

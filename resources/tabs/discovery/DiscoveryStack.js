@@ -15,18 +15,12 @@ const DiscoveryStack = createStackNavigator(
     {
         navigationOptions: {
             headerTintColor: '#fff',
+            headerTitleStyle: {flex:1, textAlign: 'center', fontWeight: 'normal'},
             headerStyle: {
                 backgroundColor: '#383838',
             },
         }
     }
 );
-
-// function select(store) {
-//     return {
-//         tab: store.navigation.tab,
-//         isLoggedIn: store.user.isLoggedIn || store.user.hasSkippedLogin
-//     };
-// }
 
 export default DiscoveryStack;

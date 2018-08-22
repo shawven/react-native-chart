@@ -16,7 +16,7 @@ const tabNavigator = createBottomTabNavigator(
                 tabBarIcon: ({ focused, tintColor }) => (<Ionicons
                     name="ios-text"
                     size={25}
-                    style={{color: tintColor}}/> )
+                    style={{color: tintColor}}/> ),
             }),
         },
         ContactStack: {
@@ -62,5 +62,9 @@ const tabNavigator = createBottomTabNavigator(
         swipeEnabled: false,
     }
 );
+
+tabNavigator.navigationOptions = {
+    header: null,
+};
 
 export default tabNavigator;

@@ -14,6 +14,7 @@ const MyStack = createStackNavigator(
     {
         navigationOptions: {
             headerTintColor: '#fff',
+            headerTitleStyle: {flex:1, textAlign: 'center', fontWeight: 'normal'},
             headerStyle: {
                 backgroundColor: '#383838',
             },

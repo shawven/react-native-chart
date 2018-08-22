@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { SectionList, StyleSheet, Text, View } from 'react-native';
 
-export default class SectionListBasics extends Component {
+export default class Contact extends React.Component {
 
     static navigationOptions = {
         title: "联系人",

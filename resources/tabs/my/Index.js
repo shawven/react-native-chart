@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, Button, StatusBar} from 'react-native';
+import {View, Text, Button} from 'react-native';
 import { List, ListItem } from 'react-native-elements'
+import StatusBar from '../../common/StatusBar';
 
 const list = [
         {

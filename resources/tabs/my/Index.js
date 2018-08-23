@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, Button} from 'react-native';
 import { List, ListItem } from 'react-native-elements'
-import StatusBar from '../../common/StatusBar';
 
 const list = [
         {
@@ -30,7 +29,6 @@ export default class MyTab extends React.Component {
     render() {
         return (
             <View>
-                <StatusBar barStyle="light-content" backgroundColor="#383838"/>
                 <List containerStyle={{marginBottom: 20}}>
                     {
                         list.map((l) => (

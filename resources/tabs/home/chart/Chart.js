@@ -1,21 +1,23 @@
 import React from 'react';
-import {Platform, StyleSheet, Text, View, StatusBar} from 'react-native';
+import {Platform, StyleSheet, Text, View, StatusBar, ActivityIndicator} from 'react-native';
 import {GiftedChat, Actions, Bubble, SystemMessage} from 'react-native-gifted-chat';
 import CustomActions from './CustomActions';
 import CustomView from './CustomView';
 import Icon from "react-native-vector-icons/Ionicons";
+import SocketClient from './socketClient'
 
 export default class Chart extends React.Component {
 
-    static navigationOptions =({navigation }) => {
+    static navigationOptions = ({navigation}) => {
         return {
             headerTitle: navigation.getParam('item', {}).name,
-            headerRight: <Icon.Button name="ios-information-circle-outline" size={30} backgroundColor="#383838" />,
+            headerRight: <Icon.Button name="ios-information-circle-outline" size={30} backgroundColor="#383838"/>,
         }
     };
 
     constructor(props) {
         super(props);
+        this.client = new SocketClient();
         this.state = {
             messages: [],
             loadEarlier: true,
@@ -36,6 +38,7 @@ export default class Chart extends React.Component {
     }
 
     componentWillMount() {
+        this.client.connect();
         this._isMounted = true;
         this.setState(() => {
             return {
@@ -74,9 +77,9 @@ export default class Chart extends React.Component {
                 messages: GiftedChat.append(previousState.messages, messages),
             };
         });
-
+        this.client.send(messages);
         // for demo purpose
-        this.answerDemo(messages);
+        // this.answerDemo(messages);
     }
 
     answerDemo(messages) {
@@ -145,7 +148,8 @@ export default class Chart extends React.Component {
             'Action 2': (props) => {
                 alert('option 2');
             },
-            'Cancel': () => {},
+            'Cancel': () => {
+            },
         };
         return (
             <Actions
@@ -162,6 +166,17 @@ export default class Chart extends React.Component {
                 wrapperStyle={{
                     left: {
                         backgroundColor: '#f0f0f0',
+                    },
+                    right: {
+                        backgroundColor: '#62b900',
+                    }
+                }}
+                textStyle={{
+                    left: {
+                        color: '#000',
+                    },
+                    right: {
+                        color: '#000',
                     }
                 }}
             />
@@ -212,8 +227,12 @@ export default class Chart extends React.Component {
                 onLoadEarlier={this.onLoadEarlier}
                 isLoadingEarlier={this.state.isLoadingEarlier}
                 user={{_id: 1}}
+                renderAvatarOnTop={true}
+                showUserAvatar={true}
+                showAvatarForEveryMessage={true}
                 renderBubble={this.renderBubble}
                 renderSystemMessage={this.renderSystemMessage}
+                renderActions={this.renderCustomActions}
                 renderCustomView={this.renderCustomView}
                 renderFooter={this.renderFooter}
             />

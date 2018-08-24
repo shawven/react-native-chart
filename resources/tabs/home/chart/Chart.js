@@ -17,7 +17,11 @@ export default class Chart extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.client = new SocketClient();
+        this.client.connect();
+        this.client.read = this.onReceive;
+
         this.state = {
             messages: [],
             loadEarlier: true,
@@ -38,7 +42,6 @@ export default class Chart extends React.Component {
     }
 
     componentWillMount() {
-        this.client.connect();
         this._isMounted = true;
         this.setState(() => {
             return {
@@ -77,9 +80,7 @@ export default class Chart extends React.Component {
                 messages: GiftedChat.append(previousState.messages, messages),
             };
         });
-        this.client.send(messages);
-        // for demo purpose
-        // this.answerDemo(messages);
+        this.client.write(JSON.stringify(messages));
     }
 
     answerDemo(messages) {
@@ -117,12 +118,12 @@ export default class Chart extends React.Component {
         }, 1000);
     }
 
-    onReceive(text) {
+    onReceive(message) {
         this.setState((previousState) => {
             return {
                 messages: GiftedChat.append(previousState.messages, {
                     _id: Math.round(Math.random() * 1000000),
-                    text: text,
+                    text: JSON.parse(message)[0].text,
                     createdAt: new Date(),
                     user: {
                         _id: 2,

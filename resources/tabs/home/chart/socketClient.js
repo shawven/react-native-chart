@@ -1,62 +1,50 @@
 import {Alert} from 'react-native';
+
 export default class socketClient {
 
-    url = "ws://localhost:8888/websocket";
+    static url = "ws://10.0.0.20:8888/websocket";
 
-    client;
+    _onopen = (e) => {
+        this.open(e);
+    };
+
+    _onmessage = (e) => {
+        this.checkSocketStatus();
+        this.read(e.data);
+    };
+
+    _onerror = (e) => {
+        Alert.alert("on error:", e.message);
+    };
+
+    _onclose = (e) => {
+        Alert.alert("on close:", e.code, e.reason);
+    };
 
     connect() {
-        this.client = new WebSocket("ws://127.0.0.1:8888/websocket?uid=" + Math.random());
+        this.client = new WebSocket(socketClient.url);
 
-        this.client .onopen = () => {
-            // connection opened
-            this.client.send("something"); // send a message
-        };
+        this.client.onopen = this._onopen;
 
-        this.client .onmessage = e => {
-            // a message was received
-            Alert.alert(e.data);
-        };
+        this.client.onmessage = this._onmessage;
 
-        this.client.onerror = e => {
-            // an error occurred
-            Alert.alert(e.message);
-        };
+        this.client.onerror = this._onerror;
 
-        this.client.onclose = e => {
-            // connection closed
-            Alert.alert(e.code, e.reason);
-        };
+        this.client.onclose = this._onclose;
     }
 
-    send(message) {
-        this._checkSocketStatus();
+    open(e) {
+    }
+
+    write(message) {
+        this.checkSocketStatus();
         this.client.send(message);
     }
 
-    _onopen () {
-        // connection opened
-        this.client.send("something"); // send a message
+    read(message) {
     }
 
-
-    _onmessage (e) {
-        // a message was received
-        console.log("on message:", e.data);
-    }
-
-    _onerror (e) {
-        // an error occurred
-        console.log("on error:", e.message);
-
-    }
-
-    _onclose (e) {
-        // connection closed
-        console.log("on close:", e.code, e.reason);
-    }
-
-    _checkSocketStatus() {
+    checkSocketStatus() {
         if (this.client.readyState !== WebSocket.OPEN) {
             throw new Error("socket connect failed")
         }
